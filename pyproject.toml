@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "hexlet-code"
+version = "0.1.0"
+description = ""
+authors = ["Asgef <asgefes1@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+flask = "^3.0.2"
+python-dotenv = "^1.0.1"
+
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
