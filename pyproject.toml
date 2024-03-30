@@ -4,11 +4,13 @@ version = "0.1.0"
 description = ""
 authors = ["Asgef <asgefes1@gmail.com>"]
 readme = "README.md"
+packages = [{include = "page_analyzer"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
 flask = "^3.0.2"
 python-dotenv = "^1.0.1"
+gunicorn = "^21.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
