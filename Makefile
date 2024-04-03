@@ -13,4 +13,3 @@ lint:
 
 build:
 	./build.sh
-
