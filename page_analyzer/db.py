@@ -20,6 +20,16 @@ def get_url_by_name(name):
     return url
 
 
+def get_url_by_id(id):
+
+    with conn.cursor() as curs:
+        select = 'SELECT * FROM urls WHERE id=(%s)'
+        curs.execute(select, [id])
+        url = curs.fetchone()
+
+    return url
+
+
 def add_url_to_db(address):
 
     with conn.cursor() as curs:
