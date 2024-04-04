@@ -13,9 +13,8 @@ conn = psycopg2.connect(DATABASE_URL)
 def get_url_by_name(name):
 
     with conn.cursor() as curs:
-        select = 'SELECT * FROM URLS WHERE name=(%s)'
+        select = 'SELECT * FROM urls WHERE name=(%s)'
         curs.execute(select, [name])
         url = curs.fetchone()
-    conn.close()
 
     return url
