@@ -9,7 +9,9 @@ from flask import (
 )
 from dotenv import load_dotenv
 from page_analyzer.db import add_url_to_db, get_url_by_name
-from page_analyzer.validator import validate, ERROR_INVALID_URL, ERROR_URL_EXISTS
+from page_analyzer.validator import (
+    validate, ERROR_INVALID_URL, ERROR_URL_EXISTS
+)
 import os
 
 load_dotenv()
