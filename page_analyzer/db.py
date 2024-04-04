@@ -20,5 +20,9 @@ def get_url_by_name(name):
     return url
 
 
-def add_url_to_db():
-    pass
+def add_url_to_db(address):
+
+    with conn.cursor() as curs:
+        insert = 'INSERT INTO urls (name) VALUES (%s)'
+        curs.execute(insert, (address))
+        conn.commit()
