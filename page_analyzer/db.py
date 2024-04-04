@@ -18,3 +18,7 @@ def get_url_by_name(name):
         url = curs.fetchone()
 
     return url
+
+
+def add_url_to_db():
+    pass

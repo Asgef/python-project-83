@@ -1,4 +1,4 @@
-import validator
+import validators
 from urllib.parse import urlparse
 from page_analyzer.db import get_url_by_name
 
@@ -13,7 +13,7 @@ def validate(url):
 
     if len(url) == 0 or len(url) > 255:
         error = ERROR_INVALID_URL
-    elif not validator.url(url):
+    elif not validators.url(url):
         error = ERROR_INVALID_URL
     else:
         parsed_url = urlparse(url)

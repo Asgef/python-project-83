@@ -8,8 +8,8 @@ from flask import (
     redirect
 )
 from dotenv import load_dotenv
-from validator import validate, ERROR_INVALID_URL, ERROR_URL_EXISTS
 from page_analyzer.db import add_url_to_db, get_url_by_name
+from page_analyzer.validator import validate, ERROR_INVALID_URL, ERROR_URL_EXISTS
 import os
 
 load_dotenv()
@@ -32,13 +32,13 @@ def post_urls():
     error = validated['error']
     url = validated['url']
 
-    if error == ERROR_INVALID_URL:
+    if error == ERROR_URL_EXISTS:
         id = validated['id']
         flash('Страница уже существует', 'error')
 
         return redirect(url_for('show', id=id))
 
-    elif error == ERROR_URL_EXISTS:
+    elif error == ERROR_INVALID_URL:
         flash('Некорректный URL', 'error')
 
         messages = get_flashed_messages(with_categories=True)
