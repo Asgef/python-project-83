@@ -36,8 +36,8 @@ def add_url_to_db(address):
     conn = psycopg2.connect(DATABASE_URL)
 
     with conn.cursor() as curs:
-        insert = 'INSERT INTO urls (name) VALUES (%s);'
-        curs.execute(insert, [address])
+        insert = 'INSERT INTO urls (name, created_at) VALUES (%s, %s);'
+        curs.execute(insert, (address['name'], address['created_at']))
         conn.commit()
     conn.close()
 

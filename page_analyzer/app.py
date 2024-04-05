@@ -13,6 +13,7 @@ from page_analyzer.db import (
 from page_analyzer.validator import (
     validate, ERROR_INVALID_URL, ERROR_URL_EXISTS
 )
+from datetime import datetime
 from dotenv import load_dotenv
 import os
 
@@ -35,7 +36,6 @@ def post_urls():
     validated = validate(url)
     error = validated['error']
     url = validated['url']
-    print(error)
 
     if error == ERROR_URL_EXISTS:
         id = validated['id']
@@ -53,7 +53,12 @@ def post_urls():
             url=url
         ), 422
 
-    add_url_to_db(url)
+    address = {
+        'name': url,
+        'created_at': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+
+    add_url_to_db(address)
     id = get_url_by_name(url)[0]
 
     flash('Страница успешно добавлена', 'success')
