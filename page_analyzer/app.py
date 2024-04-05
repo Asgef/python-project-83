@@ -7,11 +7,13 @@ from flask import (
     get_flashed_messages,
     redirect
 )
-from dotenv import load_dotenv
-from page_analyzer.db import add_url_to_db, get_url_by_name, get_url_by_id
+from page_analyzer.db import (
+    add_url_to_db, get_url_by_name, get_url_by_id, get_all_urls
+)
 from page_analyzer.validator import (
     validate, ERROR_INVALID_URL, ERROR_URL_EXISTS
 )
+from dotenv import load_dotenv
 import os
 
 load_dotenv()
@@ -26,7 +28,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/urls', methods=['POST'])
+@app.post('/urls')
 def post_urls():
 
     url = request.form.get('url')
@@ -56,6 +58,17 @@ def post_urls():
 
     flash('Страница успешно добавлена', 'success')
     return redirect(url_for('show_urls', id=id))
+
+
+@app.get('/urls')
+def get_list_urls():
+    data_urls = get_all_urls()
+    urls = [{'id': id, 'name': name} for id, name in data_urls]
+
+    return render_template(
+        'urls.html',
+        urls=urls
+    )
 
 
 @app.route('/urls/<int:id>', methods=['GET'])
