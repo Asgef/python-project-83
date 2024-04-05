@@ -33,6 +33,7 @@ def post_urls():
     validated = validate(url)
     error = validated['error']
     url = validated['url']
+    print(error)
 
     if error == ERROR_URL_EXISTS:
         id = validated['id']
@@ -59,16 +60,26 @@ def post_urls():
 
 @app.route('/urls/<int:id>', methods=['GET'])
 def show_urls(id):
-    url = get_url_by_id(id)
+    data_url = get_url_by_id(id)
     # checks
-    if url:
+
+    if not data_url:
+        return 'Page not found', 404
+
+    else:
+        url = {
+            'id': data_url[0],
+            'name': data_url[1],
+            'created_at': data_url[2].strftime('%Y-%m-%d')
+        }
+
+        messages = get_flashed_messages(with_categories=True)
+
         return render_template(
             'show.html',
-            url = url
+            url=url,
+            messages=messages
         )
-    else:
-        return 'Page not found', 404 
-
 
 
 if __name__ == '__main__':
