@@ -8,13 +8,17 @@ from flask import (
     redirect
 )
 from page_analyzer.db import (
-    add_url_to_db, get_url_by_name, get_url_by_id, get_all_urls
+    add_url_to_db, get_url_by_name,
+    get_url_by_id, get_all_urls,
+    add_check_to_db
 )
 from page_analyzer.validator import (
     validate, ERROR_INVALID_URL, ERROR_URL_EXISTS
 )
+from page_analyzer.check_url import get_check_url
 from datetime import datetime
 from dotenv import load_dotenv
+import requests
 import os
 
 load_dotenv()
@@ -76,7 +80,7 @@ def get_list_urls():
     )
 
 
-@app.route('/urls/<int:id>', methods=['GET'])
+@app.route('/urls/<int:id>')
 def show_urls(id):
     data_url = get_url_by_id(id)
     # checks
@@ -98,6 +102,29 @@ def show_urls(id):
             url=url,
             messages=messages
         )
+
+
+@app.post('/urls/<int:id>/checks')
+def check_url(id):
+    data_url = get_url_by_id(id)
+    print(data_url)
+    url = data_url[1]
+
+    try:
+        check = get_check_url(url)
+        check['url_id'] = id
+        check['created_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        add_check_to_db(check)
+        flash('Страница успешно проверена', 'alert-success')
+    
+    except requests.RequestException:
+        flash('Произошла ошибка при проверке', 'alert-danger')
+    
+    return redirect(url_for(
+        'show_urls',
+        id=id
+    ))
 
 
 if __name__ == '__main__':

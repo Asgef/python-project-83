@@ -54,3 +54,13 @@ def get_all_urls():
     conn.close()
 
     return urls
+
+
+def add_check_to_db(data):
+    conn = psycopg2.connect(DATABASE_URL)
+
+    with conn.cursor() as curs:
+        insert = 'INSERT INTO url_checks (url_id, created_at) VALUES (%s, %s);'
+        curs.execute(insert, (data['url_id'], data['created_at']))
+        conn.commit()
+    conn.close()
