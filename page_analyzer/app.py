@@ -43,12 +43,12 @@ def post_urls():
 
     if error == ERROR_URL_EXISTS:
         id = validated['id']
-        flash('Страница уже существует', 'error')
+        flash('Страница уже существует', 'alert-info')
 
         return redirect(url_for('show_urls', id=id))
 
     elif error == ERROR_INVALID_URL:
-        flash('Некорректный URL', 'error')
+        flash('Некорректный URL', 'alert-warning')
 
         messages = get_flashed_messages(with_categories=True)
         return render_template(
@@ -65,7 +65,7 @@ def post_urls():
     add_url_to_db(address)
     id = get_url_by_name(url)[0]
 
-    flash('Страница успешно добавлена', 'success')
+    flash('Страница успешно добавлена', 'alert-success')
     return redirect(url_for('show_urls', id=id))
 
 
@@ -95,7 +95,10 @@ def show_urls(id):
         }
 
         data_checks = get_checks_by_id_url(id)
-        checks = [{'id': id, 'created_at': date.strftime('%Y-%m-%d')} for id,_,_,_,_,_, date in data_checks]
+        checks = [
+            {'id': id, 'created_at': date.strftime('%Y-%m-%d')}
+            for id, _, _, _, _, _, date in data_checks
+        ]
 
         messages = get_flashed_messages(with_categories=True)
 
@@ -120,10 +123,10 @@ def check_url(id):
 
         add_check_to_db(check)
         flash('Страница успешно проверена', 'alert-success')
-    
+
     except requests.RequestException:
         flash('Произошла ошибка при проверке', 'alert-danger')
-    
+
     return redirect(url_for(
         'show_urls',
         id=id
