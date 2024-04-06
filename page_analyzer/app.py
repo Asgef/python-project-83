@@ -71,8 +71,7 @@ def post_urls():
 
 @app.get('/urls')
 def get_list_urls():
-    data_urls = get_all_urls()
-    urls = [{'id': id, 'name': name} for id, name in data_urls]
+    urls = get_all_urls()
 
     return render_template(
         'urls.html',
@@ -113,7 +112,6 @@ def show_urls(id):
 @app.post('/urls/<int:id>/checks')
 def check_url(id):
     data_url = get_url_by_id(id)
-    print(data_url)
     url = data_url[1]
 
     try:
