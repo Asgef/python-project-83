@@ -10,7 +10,7 @@ from flask import (
 from page_analyzer.db import (
     add_url_to_db, get_url_by_name,
     get_url_by_id, get_all_urls,
-    add_check_to_db
+    add_check_to_db, get_checks_by_id_url
 )
 from page_analyzer.validator import (
     validate, ERROR_INVALID_URL, ERROR_URL_EXISTS
@@ -83,7 +83,6 @@ def get_list_urls():
 @app.route('/urls/<int:id>')
 def show_urls(id):
     data_url = get_url_by_id(id)
-    # checks
 
     if not data_url:
         return 'Page not found', 404
@@ -95,11 +94,15 @@ def show_urls(id):
             'created_at': data_url[2].strftime('%Y-%m-%d')
         }
 
+        data_checks = get_checks_by_id_url(id)
+        checks = [{'id': id, 'created_at': date.strftime('%Y-%m-%d')} for id,_,_,_,_,_, date in data_checks]
+
         messages = get_flashed_messages(with_categories=True)
 
         return render_template(
             'show.html',
             url=url,
+            checks=checks,
             messages=messages
         )
 

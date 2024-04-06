@@ -64,3 +64,15 @@ def add_check_to_db(data):
         curs.execute(insert, (data['url_id'], data['created_at']))
         conn.commit()
     conn.close()
+
+
+def get_checks_by_id_url(url_id):
+    conn = psycopg2.connect(DATABASE_URL)
+
+    with conn.cursor() as curs:
+        select = 'SELECT * FROM url_checks WHERE url_id=(%s) ORDER BY id DESC;'
+        curs.execute(select, [url_id])
+        url = curs.fetchall()
+    conn.close()
+
+    return url
