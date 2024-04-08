@@ -71,8 +71,23 @@ def add_check_to_db(data):
     conn = psycopg2.connect(DATABASE_URL)
 
     with conn.cursor() as curs:
-        insert = 'INSERT INTO url_checks (url_id, created_at) VALUES (%s, %s);'
-        curs.execute(insert, (data['url_id'], data['created_at']))
+        insert = '''INSERT INTO url_checks (
+                        url_id,
+                        status_code,
+                        h1,
+                        title, 
+                        description,
+                        created_at)
+                    VALUES (%s, %s, %s, %s, %s, %s);'''
+        data_check = (
+            data['url_id'],
+            data['status_code'],
+            data['h1'],
+            data['title'],
+            data['description'],
+            data['created_at']
+        )
+        curs.execute(insert, data_check)
         conn.commit()
     conn.close()
 
