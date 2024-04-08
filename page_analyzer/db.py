@@ -75,7 +75,7 @@ def add_check_to_db(data):
                         url_id,
                         status_code,
                         h1,
-                        title, 
+                        title,
                         description,
                         created_at)
                     VALUES (%s, %s, %s, %s, %s, %s);'''

@@ -95,8 +95,15 @@ def show_urls(id):
 
         data_checks = get_checks_by_id_url(id)
         checks = [
-            {'id': id, 'created_at': date.strftime('%Y-%m-%d')}
-            for id, _, _, _, _, _, date in data_checks
+            {
+                'id': id,
+                'status_code': status_code,
+                'h1': h1,
+                'title': title,
+                'description': description,
+                'created_at': date.strftime('%Y-%m-%d')
+            }
+            for id, _, status_code, h1, title, description, date in data_checks
         ]
 
         messages = get_flashed_messages(with_categories=True)

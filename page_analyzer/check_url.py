@@ -1,12 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
 
+
 def get_check_url(address):
     rqsts = requests.get(address, timeout=3)
 
     if rqsts.status_code != 200:
         raise requests.RequestException
-    
+
     check = {'status_code': rqsts.status_code}
     data_page = BeautifulSoup(rqsts.text, 'html.parser')
 
@@ -18,6 +19,5 @@ def get_check_url(address):
     check['title'] = title_tag.text.strip() if title_tag else ''
     check['description'] = description_tag['content'].strip() \
         if description_tag else ''
-    
-    
+
     return check
