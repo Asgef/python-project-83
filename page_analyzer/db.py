@@ -24,7 +24,7 @@ def get_url_by_name(name):
 def get_url_by_id(id):
     conn = psycopg2.connect(DATABASE_URL)
 
-    with conn.cursor() as curs:
+    with conn.cursor(cursor_factory=RealDictCursor) as curs:
         select = 'SELECT * FROM urls WHERE id=(%s);'
         curs.execute(select, [id])
         url = curs.fetchone()
@@ -36,7 +36,7 @@ def get_url_by_id(id):
 def add_url_to_db(address):
     conn = psycopg2.connect(DATABASE_URL)
 
-    with conn.cursor() as curs:
+    with conn.cursor(cursor_factory=RealDictCursor) as curs:
         insert = 'INSERT INTO urls (name, created_at) VALUES (%s, %s);'
         curs.execute(insert, (address['name'], address['created_at']))
         conn.commit()
@@ -70,7 +70,7 @@ def get_all_urls():
 def add_check_to_db(data):
     conn = psycopg2.connect(DATABASE_URL)
 
-    with conn.cursor() as curs:
+    with conn.cursor(cursor_factory=RealDictCursor) as curs:
         insert = '''INSERT INTO url_checks (
                         url_id,
                         status_code,
@@ -95,7 +95,7 @@ def add_check_to_db(data):
 def get_checks_by_id_url(url_id):
     conn = psycopg2.connect(DATABASE_URL)
 
-    with conn.cursor() as curs:
+    with conn.cursor(cursor_factory=RealDictCursor) as curs:
         select = 'SELECT * FROM url_checks WHERE url_id=(%s) ORDER BY id DESC;'
         curs.execute(select, [url_id])
         url = curs.fetchall()

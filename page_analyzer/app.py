@@ -48,7 +48,7 @@ def post_urls():
         flash('Страница уже существует', 'alert-info')
 
         return redirect(url_for('show_urls', id=id))
-    
+
     elif error == ERROR_URL_TOO_LONG:
         flash('URL превышает 255 символов', 'alert-danger')
 
@@ -58,7 +58,6 @@ def post_urls():
             messages=messages,
             url=url
         ), 422
-
 
     elif error == ERROR_INVALID_URL:
         flash('Некорректный URL', 'alert-danger')
@@ -94,30 +93,13 @@ def get_list_urls():
 
 @app.route('/urls/<int:id>')
 def show_urls(id):
-    data_url = get_url_by_id(id)
+    url = get_url_by_id(id)
 
-    if not data_url:
+    if not url:
         abort(404)
 
     else:
-        url = {
-            'id': data_url[0],
-            'name': data_url[1],
-            'created_at': data_url[2].strftime('%Y-%m-%d')
-        }
-
-        data_checks = get_checks_by_id_url(id)
-        checks = [
-            {
-                'id': id,
-                'status_code': status_code,
-                'h1': h1,
-                'title': title,
-                'description': description,
-                'created_at': date.strftime('%Y-%m-%d')
-            }
-            for id, _, status_code, h1, title, description, date in data_checks
-        ]
+        checks = get_checks_by_id_url(id)
 
         messages = get_flashed_messages(with_categories=True)
 
@@ -131,8 +113,7 @@ def show_urls(id):
 
 @app.post('/urls/<int:id>/checks')
 def check_url(id):
-    data_url = get_url_by_id(id)
-    url = data_url[1]
+    url = get_url_by_id(id)['name']
 
     try:
         check = get_check_url(url)
