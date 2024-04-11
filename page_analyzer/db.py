@@ -12,7 +12,7 @@ DATABASE_URL = os.getenv('DATABASE_URL')
 def get_url_by_name(name):
     conn = psycopg2.connect(DATABASE_URL)
 
-    with conn.cursor() as curs:
+    with conn.cursor(cursor_factory=RealDictCursor) as curs:
         select = 'SELECT * FROM urls WHERE name=(%s)'
         curs.execute(select, [name])
         url = curs.fetchone()

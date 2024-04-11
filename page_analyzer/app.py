@@ -13,9 +13,10 @@ from page_analyzer.db import (
     get_url_by_id, get_all_urls,
     add_check_to_db, get_checks_by_id_url
 )
-from page_analyzer.validator import (
-    validate, ERROR_INVALID_URL, ERROR_URL_EXISTS, ERROR_URL_TOO_LONG
+from page_analyzer.constants import (
+    ERROR_INVALID_URL, ERROR_URL_EXISTS, ERROR_URL_TOO_LONG
 )
+from page_analyzer.validator import validate
 from page_analyzer.check_url import get_check_url
 from datetime import datetime
 from dotenv import load_dotenv
@@ -75,7 +76,7 @@ def post_urls():
     }
 
     add_url_to_db(address)
-    id = get_url_by_name(url)[0]
+    id = get_url_by_name(url)['id']
 
     flash('Страница успешно добавлена', 'alert-success')
     return redirect(url_for('show_urls', id=id))

@@ -1,11 +1,9 @@
 import validators
 from urllib.parse import urlparse
 from page_analyzer.db import get_url_by_name
-
-
-ERROR_INVALID_URL = 1
-ERROR_URL_EXISTS = 2
-ERROR_URL_TOO_LONG = 3
+from page_analyzer.constants import (
+    ERROR_URL_TOO_LONG, ERROR_INVALID_URL, ERROR_URL_EXISTS
+)
 
 
 def validate(url):
@@ -14,8 +12,10 @@ def validate(url):
 
     if len(url) > 255:
         error = ERROR_URL_TOO_LONG
+
     elif not validators.url(url):
         error = ERROR_INVALID_URL
+
     else:
         parsed_url = urlparse(url)
         normalised_url = f'{parsed_url.scheme}://{parsed_url.netloc}'
@@ -23,7 +23,7 @@ def validate(url):
 
         if url_found_db:
             error = ERROR_URL_EXISTS
-            id = url_found_db[0]
+            id = url_found_db['id']
 
         url = normalised_url
 
