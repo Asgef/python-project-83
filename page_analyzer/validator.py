@@ -5,14 +5,15 @@ from page_analyzer.db import get_url_by_name
 
 ERROR_INVALID_URL = 1
 ERROR_URL_EXISTS = 2
+ERROR_URL_TOO_LONG = 3
 
 
 def validate(url):
     error = None
     id = None
 
-    if len(url) == 0 or len(url) > 255:
-        error = ERROR_INVALID_URL
+    if len(url) > 255:
+        error = ERROR_URL_TOO_LONG
     elif not validators.url(url):
         error = ERROR_INVALID_URL
     else:

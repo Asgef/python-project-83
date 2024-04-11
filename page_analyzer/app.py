@@ -5,7 +5,8 @@ from flask import (
     request,
     flash,
     get_flashed_messages,
-    redirect
+    redirect,
+    abort
 )
 from page_analyzer.db import (
     add_url_to_db, get_url_by_name,
@@ -13,7 +14,7 @@ from page_analyzer.db import (
     add_check_to_db, get_checks_by_id_url
 )
 from page_analyzer.validator import (
-    validate, ERROR_INVALID_URL, ERROR_URL_EXISTS
+    validate, ERROR_INVALID_URL, ERROR_URL_EXISTS, ERROR_URL_TOO_LONG
 )
 from page_analyzer.check_url import get_check_url
 from datetime import datetime
@@ -38,7 +39,7 @@ def post_urls():
 
     url = request.form.get('url')
     validated = validate(url)
-    
+
     error = validated['error']
     url = validated['url']
 
@@ -47,9 +48,20 @@ def post_urls():
         flash('Страница уже существует', 'alert-info')
 
         return redirect(url_for('show_urls', id=id))
+    
+    elif error == ERROR_URL_TOO_LONG:
+        flash('URL превышает 255 символов', 'alert-danger')
+
+        messages = get_flashed_messages(with_categories=True)
+        return render_template(
+            'index.html',
+            messages=messages,
+            url=url
+        ), 422
+
 
     elif error == ERROR_INVALID_URL:
-        flash('Некорректный URL', 'alert-warning')
+        flash('Некорректный URL', 'alert-danger')
 
         messages = get_flashed_messages(with_categories=True)
         return render_template(
@@ -85,7 +97,7 @@ def show_urls(id):
     data_url = get_url_by_id(id)
 
     if not data_url:
-        return 'Page not found', 404
+        abort(404)
 
     else:
         url = {
