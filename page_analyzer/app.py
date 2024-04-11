@@ -38,6 +38,7 @@ def post_urls():
 
     url = request.form.get('url')
     validated = validate(url)
+    
     error = validated['error']
     url = validated['url']
 
