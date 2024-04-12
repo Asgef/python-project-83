@@ -57,7 +57,7 @@ def post_urls():
     url = validated['url']
 
     if error == ERROR_URL_EXISTS:
-        id = get_url_by_name['id']
+        id = get_url_by_name(url)['id']
         flash('Страница уже существует', 'alert-info')
 
         return redirect(url_for('show_urls', id=id))
