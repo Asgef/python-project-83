@@ -32,12 +32,24 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 @app.route('/')
 def index():
+    '''
+    Render the main page
+
+    :return: Renders the HTML template for index.html.
+    '''
     return render_template('index.html')
 
 
 @app.post('/urls')
 def post_urls():
+    '''
+    Add a new URL. Check if it is in stock. Validate the URL.
+    Add it to your database if this URL doesn't already exist.
+    Raise an error if it occurs.
 
+    :return: Redirect to this URL's page if it was added to the bd
+    or already exists. Render index page with flash error message
+    '''
     url = request.form.get('url')
     validated = validate(url)
 
@@ -51,9 +63,10 @@ def post_urls():
         return redirect(url_for('show_urls', id=id))
 
     elif error == ERROR_URL_TOO_LONG:
-        flash('URL превышает 255 символов', 'alert-danger')
 
+        flash('URL превышает 255 символов', 'alert-danger')
         messages = get_flashed_messages(with_categories=True)
+
         return render_template(
             'index.html',
             messages=messages,
@@ -61,9 +74,10 @@ def post_urls():
         ), 422
 
     elif error == ERROR_INVALID_URL:
-        flash('Некорректный URL', 'alert-danger')
 
+        flash('Некорректный URL', 'alert-danger')
         messages = get_flashed_messages(with_categories=True)
+
         return render_template(
             'index.html',
             messages=messages,
@@ -84,6 +98,11 @@ def post_urls():
 
 @app.get('/urls')
 def get_list_urls():
+    '''
+    Render all previously added URLs and their last check dates, if any.
+
+    :return: Render the HTML template for urls.html.
+    '''
     urls = get_all_urls()
 
     return render_template(
@@ -94,6 +113,16 @@ def get_list_urls():
 
 @app.route('/urls/<int:id>')
 def show_urls(id):
+    '''
+    Render information about a specific URL by its id in the db.
+    Show information about checks and flash message if available.
+    If there is no record with a specific id in the db,
+    an 'HTTPException' exception is thrown.
+
+    :param id: URL id in db.
+    :return: Render the HTML template for show.html or
+    raise an exception 'HTTPException'
+    '''
     url = get_url_by_id(id)
 
     if not url:
@@ -101,7 +130,6 @@ def show_urls(id):
 
     else:
         checks = get_checks_by_id_url(id)
-
         messages = get_flashed_messages(with_categories=True)
 
         return render_template(
@@ -114,6 +142,15 @@ def show_urls(id):
 
 @app.post('/urls/<int:id>/checks')
 def check_url(id):
+    '''
+    Check a specific URL by its id in the db.
+    Add verification data to the db or throw an exception.
+    Create a flash message about the verification status.
+
+    :param id: URL id in db.
+    :return: Redirect to a page with a specific URL with updated data or
+    an error message.
+    '''
     url = get_url_by_id(id)['name']
 
     try:
@@ -135,6 +172,11 @@ def check_url(id):
 
 @app.errorhandler(404)
 def page_not_found(error):
+    '''
+    Display a page with a '404' error if there is no record in the db by id.
+
+    :return: Render the HTML template for 404.html.
+    '''
     return render_template(
         '404.html'
     ), 404
