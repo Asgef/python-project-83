@@ -16,7 +16,6 @@ def validate(url) -> dict:
     :rtype: dict
     '''
     error = None
-    id = None
 
     if len(url) > 255:
         error = ERROR_URL_TOO_LONG
@@ -31,10 +30,9 @@ def validate(url) -> dict:
 
         if url_found_db:
             error = ERROR_URL_EXISTS
-            id = url_found_db['id']
 
         url = normalised_url
 
-    valid = {'id': id, 'url': url, 'error': error}
+    valid = {'url': url, 'error': error}
 
     return valid
