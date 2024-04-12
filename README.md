@@ -2,7 +2,8 @@
 
   <h1>Hexlet project: Page analyzer</h1>
 
-  [Analyze web pages for SEO suitability](https://python-project-83-1-5pft.onrender.com)
+  [Analyze web pages for SEO suitability](https://page-analyzer-app-yb5a.onrender.com/)
+  
 
 
 
