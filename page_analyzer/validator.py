@@ -6,7 +6,15 @@ from page_analyzer.constants import (
 )
 
 
-def validate(url):
+def validate(url) -> dict:
+    '''
+    Validate and normalize URLs.
+
+    :param url: The URL to be validated.
+    :type url: str
+    :return: A dictionary containing a normalized URL and possible errors.
+    :rtype: dict
+    '''
     error = None
     id = None
 

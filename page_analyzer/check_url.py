@@ -3,6 +3,15 @@ from bs4 import BeautifulSoup
 
 
 def get_check_url(address):
+    '''
+    Get site data by its URL, including HTTP response code, h1 tag, head tag,
+    and a meta description tag.
+
+    :param url: The URL to be check.
+    :type url: str
+    :return: A dictionary containing data received from a site by its URL
+    :rtype: dict
+    '''
     rqsts = requests.get(address, timeout=3)
 
     if rqsts.status_code != 200:
