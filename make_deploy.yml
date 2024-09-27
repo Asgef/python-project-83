@@ -28,7 +28,7 @@
         target: build
 
     - name: Stop project
-      ansible.builtin.make: pkill -f 'page_analyzer:app'
+      ansible.builtin.shell: pkill -f 'page_analyzer:app'
       ignore_errors: yes
 
     - name: Start project
