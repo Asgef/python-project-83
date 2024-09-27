@@ -29,6 +29,7 @@
 
     - name: Stop project
       ansible.builtin.make: pkill -f 'page_analyzer:app'
+      ignore_errors: yes
 
     - name: Start project
       community.general.make:
