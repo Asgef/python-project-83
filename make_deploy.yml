@@ -35,5 +35,3 @@
       community.general.make:
         chdir: "/home/{{ user }}/{{ project_name }}"
         target: start
-      async: 1   # Запустить задачу и не ждать завершения
-      poll: 0    # Не проверять завершение задачи
