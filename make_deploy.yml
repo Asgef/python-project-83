@@ -22,17 +22,15 @@
         src: ".env.j2"
         dest: "/home/{{ user }}/{{ project_name }}/.env"
 
-    - name: Install project
-      community.general.make:
-        chdir: "/home/{{ user }}/{{ project_name }}"
-        target: install
-
     - name: Build project
       community.general.make:
         chdir: "/home/{{ user }}/{{ project_name }}"
         target: build
 
-    - name: Stop any running Gunicorn processes
+    - name: Stop project
+      ansible.builtin.make: pkill -f 'page_analyzer:app'
+
+    - name: Start project
       community.general.make:
         chdir: "/home/{{ user }}/{{ project_name }}"
         target: start
