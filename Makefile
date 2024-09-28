@@ -1,12 +1,16 @@
+PORT ?= 9000
+WORKERS ?= $(shell nproc)
+.PHONY: install start-dev start lint build
+
 install:
 	poetry install
 
-dev:
+start:
 	poetry run flask --app page_analyzer:app --debug run
 
-PORT ?= 9000
-start:
-	poetry run gunicorn --daemon -w 5 -b 0.0.0.0:$(PORT) page_analyzer:app
+
+start-production:
+	poetry run gunicorn --daemon -w $(WORKERS) -b 0.0.0.0:$(PORT) page_analyzer:app
 
 lint:
 	poetry run flake8 .

@@ -5,7 +5,7 @@ on:
   - pull_request
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -41,4 +41,4 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          ansible-playbook -i hosts.ini make_deploy.yml
+          cd ansible $$ ansible-playbook -i hosts.ini make_deploy.yml
