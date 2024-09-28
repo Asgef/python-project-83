@@ -34,4 +34,4 @@
     - name: Start project
       community.general.make:
         chdir: "/home/{{ user }}/{{ project_name }}"
-        target: start
+        target: start-production

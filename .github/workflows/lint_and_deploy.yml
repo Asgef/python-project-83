@@ -1,9 +1,8 @@
 name: Checks and deploy Django Project
 
 on:
-  push:
-    branches:
-      - main
+  - push
+  - pull_request
 
 jobs:
   deploy:
@@ -11,7 +10,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
