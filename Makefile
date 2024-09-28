@@ -1,5 +1,5 @@
 PORT ?= 9000
-WORKERS ?= $(shell nproc)
+WORKERS ?= 5
 .PHONY: install start-dev start lint build
 
 install:
